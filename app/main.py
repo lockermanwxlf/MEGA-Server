@@ -47,6 +47,14 @@ def upload():
     manager.upload_file(request.form["path"], local_path)
     return { "result": "success" }
     
+@app.get("/list_dir/")
+def list_dir():
+    global loggedIn
+    if not loggedIn:
+        return { "error": "Not logged in" }
+    path = request.args.get("path")
+    return { "result": manager.list_dir(path) }
+    
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80, use_reloader=False)
