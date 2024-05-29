@@ -39,3 +39,21 @@ class Mega:
             0, # modification time
             True # delete local file after upload
         )
+        
+    def list_dir(self, path: str) -> list[str]:
+        path = "/" + path.lstrip("/")
+        node = self.api.getNodeByPath(path)
+        print(node, flush=True)
+        node = self.api.authorizeNode(node)
+        print("after auth", node, flush=True)
+        if node:
+            children = node.getChildren()
+            children = [
+                children.get(i) for i in range(children.size())
+            ]
+            names = [
+                child.getName() for child in children
+            ]
+            return names
+        else:
+            return []
