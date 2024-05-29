@@ -1,13 +1,17 @@
 from flask import Flask, request
 from manager import Mega
 import uuid
-
+import os
 
 app = Flask(__name__)
 
 loggedIn = False
 loggingIn = False
 manager =  Mega()
+
+if 'MEGA_EMAIL' in os.environ and 'MEGA_PASSWORD' in os.environ:
+    manager.login(os.environ['MEGA_EMAIL'], os.environ['MEGA_PASSWORD'])
+    loggedIn = True
 
 @app.post("/login/")
 def login():
